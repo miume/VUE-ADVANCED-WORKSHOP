@@ -1,0 +1,22 @@
+{
+  "name": "vue",
+  "version": "1.0.0",
+  "description": " VUE-ADVANCED-WORKSHOP",
+  "main": "index.js",
+  "scripts": {
+    "test": "node scripts/run-truffle-tests.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/miume/VUE-ADVANCED-WORKSHOP.git"
+  },
+  "keywords": [
+    "vue"
+  ],
+  "author": "ym",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/miume/VUE-ADVANCED-WORKSHOP/issues"
+  },
+  "homepage": "https://github.com/miume/VUE-ADVANCED-WORKSHOP#readme"
+}

@@ -1,0 +1,25 @@
+<script>
+  function convert (obj) {
+    Object.keys(obj).forEach(key => {
+      let internalValue = obj[key]  //记录原始取值
+      Object.defineProperty(obj, key, {
+        get () {
+          console.log(`getting key "${key}": ${internalValue}`)
+          return internalValue
+        },
+        set (newValue) {
+          console.log(`setting key "${key}" to: ${newValue}`)
+          internalValue = newValue
+        }
+      })
+    })
+  }
+
+  let obj = {foo: 'learn Vue'}
+  convert(obj)
+
+  obj['foo']
+
+  obj.foo = 'Vue Reactivity'
+
+</script>
