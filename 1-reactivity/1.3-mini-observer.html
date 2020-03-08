@@ -1,0 +1,62 @@
+<script>
+    let activeUpdate;
+
+    class Dep {
+        constructor() {
+            this.subscribers = new Set();
+        }
+
+        depend () {
+            if (activeUpdate) {
+                this.subscribers.add(activeUpdate);
+            }
+            console.log('this.subscribers=',this.subscribers)
+        }
+
+        notify () {
+            console.log(this.subscribers);
+            this.subscribers.forEach(sub => sub())
+        }
+    }
+
+    function autoRun (update) {
+        function wrappedUpdate () {
+            activeUpdate = wrappedUpdate;
+            update();
+            activeUpdate = null;
+        }
+        wrappedUpdate();
+    }
+
+    function observe (obj) {
+        Object.keys(obj).forEach(e => {
+            let internalValue = obj[e], dep = new Dep();
+            Object.defineProperty(obj, e, {
+                enumerable: true, //属性可枚举
+                configurable: true, //属性可以被修改或删除
+                get () {  //依赖收集
+                    autoRun(() => {
+                        console.log('getValue',internalValue);
+                        dep.depend();
+                    });
+                    return internalValue;
+                },
+                set (newValue) { //更新视图
+                    autoRun(() => {
+                        console.log('getNewValue',newValue);
+                        dep.notify();
+                    });
+                    if (newValue = internalValue) return;
+                    internalValue = newValue;
+                }
+            })
+        })
+    }
+
+
+    const state = {
+        count: 1
+    };
+    observe(state);
+    state.count += 2
+</script>

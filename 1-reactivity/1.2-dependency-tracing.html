@@ -1,0 +1,37 @@
+<script>
+    //a class representing a dependency
+    //exposing it on window is necessary for testing
+    // clear dependency in some case
+    window.Dep = class Dep {
+        constructor () {
+            this.subscibers = []
+        }
+        depend () {
+            if (activeUpdate) {
+                this.subscibers.add(activeUpdate);
+                //register the current active update
+                // as a subscriber
+            }
+        }
+
+        notify () {
+            // run all subscriber functions
+            this.subscibers.forEach(sub => sub())
+        }
+    };
+
+    let dep = new Dep(), activeUpdate;
+
+    function autoRun (update) {
+        function wrappedUpdate () {
+            activeUpdate = wrappedUpdate;
+            update();
+            activeUpdate = null;
+        }
+        wrappedUpdate()
+    }
+
+    autoRun(() => {
+        dep.depend()
+    })
+</script>
