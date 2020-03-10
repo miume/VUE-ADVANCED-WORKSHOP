@@ -2,9 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>根据组件状态，来切换显示不同子组件</title>
 </head>
 <body>
-
+    <div id="app">
+        <example :ok="ok"></example>
+        <button @click="ok = !ok">toggle</button>
+    </div>
 </body>
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script>
+    const Foo = {
+        render: h => h('div', 'foo')
+    };
+    const Bar = {
+        render: h => h('div', 'bar')
+    };
+
+    Vue.component('example', {
+        props: ['ok'],
+        render(h) {
+            return this.ok ? h(Foo) : h(Bar);
+        }
+    });
+
+    new Vue({
+        el: '#app',
+        data: {
+            ok: true
+        }
+    })
+</script>
 </html>

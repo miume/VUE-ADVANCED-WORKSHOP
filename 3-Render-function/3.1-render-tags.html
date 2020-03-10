@@ -5,6 +5,28 @@
     <title>Title</title>
 </head>
 <body>
-
+<div id="app">
+    <example :tags="['h1','h2','h3']"></example>
+</div>
 </body>
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script>
+    Vue.component('example', {
+        props: ['tags'],
+        render (h) {
+            // const children = this.tags.map((tag,index) => h(tag, index));
+            return h('div', this.tags.map((tag,index) => h(tag, index)))
+        }
+    })
+
+    // functional component
+    const Example = {
+        functional: true,
+        return (h, { props: {tags} }) {
+            return h('div', tags.map((tag, index) => h(tag, index)))
+    }
+    }
+
+    new Vue({ el: '#app' })
+</script>
 </html>

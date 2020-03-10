@@ -1,10 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <title>Vue 测试实例 - 菜鸟教程(runoob.com)</title>
 </head>
 <body>
+<div id="app">
+    <p>{{ foo }}</p>
+    <button @click="foo--"></button>
+</div>
+
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script>
+    const RulesPlugin = {
+        install (Vue) {
+            Vue.mixin({
+                created () {
+                    if (this.$options.rules) {
+                        Object.keys(this.$options.rules).forEach(key => {
+                            const rule = this.$options.rules[key];
+                            this.$watch(key, newValue => {
+                                const result = rule.validate(newValue);
+                                if(!result) {
+                                    alert(rule.message)
+                                }
+                            })
+                        })
+                    }
+                }
+            })
+        }
+    }
+
+    Vue.use(RulesPlugin);  //安装Vue.js插件
+
+    const vm = new Vue({
+        el: '#app',
+        data: { foo: 10 },
+        rules: {
+            foo: {
+                validate: value => value > 1,
+                message: `foo must be greater than one`
+            }
+        }
+    })
+</script>
 
 </body>
 </html>

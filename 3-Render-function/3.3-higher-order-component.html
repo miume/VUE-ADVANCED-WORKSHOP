@@ -2,9 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>高阶组件（类似高阶函数）封装机制</title>
 </head>
 <body>
-
+    <div id="app">
+        <p>在父组件根据用户名，查询对应URL，然后将父组件URL传递给子组件，最后子组件根据URL显示对应图片</p>
+        <li>
+            <ul>父组件负责逻辑处理</ul>
+            <ul>子组件根据父组件props传送数据负责显示</ul>
+        </li>
+        <p>高阶组件适用于：子组件要在很多地方被调用</p>
+        <smart-avatar username="Vue.js"></smart-avatar>
+    </div>
 </body>
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script>
+    function fetchURL(username, cb) {
+        setTimeout(() => {
+            cb('https://avatars3.githubusercontent.com/u/6128107?v=4&s=200')
+        },500)
+    }
+
+    const Avatar = {
+        props: ['src'],
+        template: `<img :src="src" width="200px" height="200px">`
+    };
+
+    //高阶组件
+    function withAvatarURL (InnerComponent) {
+        return {
+            props: ['username'],
+            data () {
+              return {
+                  url: `http://via.placeholder.com/200×200`
+              }
+            },
+            created () {
+              fetchURL(this.username, url => { this.url = url })
+            },
+            render (h) {
+                return h(InnerComponent, {
+                    props: {
+                        src: this.url
+                    }
+                })
+            }
+        }
+    }
+
+    const SmartAvatar = withAvatarURL(Avatar);
+
+    new Vue({
+        el: '#app',
+        components: {SmartAvatar}
+    })
+</script>
 </html>
