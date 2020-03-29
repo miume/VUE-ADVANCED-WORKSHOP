@@ -1,0 +1,43 @@
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+
+<div id='app'>
+    <counter></counter>
+    <counter></counter>
+    <counter></counter>
+    <button @click="increment">increment</button>
+    <button @click="decrement">decrement</button>
+</div>
+
+<script>
+    //vue instance是默认响应式的
+    const state = new Vue({
+        data: {
+            count: 0
+        },
+        methods: {
+            increment () {
+                this.count++
+            },
+            decrement () {
+                this.count--
+            }
+        }
+    })
+
+    const Counter = {
+        render: h => h('div',state.count)
+    }
+
+    new Vue({
+        el: '#app',
+        components: { Counter },
+        methods: {
+            increment () {
+                state.increment()
+            },
+            decrement () {
+                state.decrement()
+            }
+        }
+    })
+</script>

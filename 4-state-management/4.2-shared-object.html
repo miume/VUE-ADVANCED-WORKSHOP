@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<body>
+    <div id='app'>
+        <counter></counter>
+        <counter></counter>
+        <counter></counter>
+        <button @click="increment">increment</button>
+        <button @click="decrement">decrement</button>
+    </div>
+</body>
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script>
+    //一个共享对象作为一个共享状态
+    const state = {
+        count: 0
+    }
+
+    //当data用对象返回时，vue会开启observe和convert，即让对象变得响应式
+    const Counter = {
+        data () {
+            return state
+        },
+        render(h) {
+            return h('div',this.count)
+        }
+    }
+
+    new Vue({
+        el: '#app',
+        components: { Counter },
+        methods: {
+            increment () {
+                state.count++
+            },
+            decrement () {
+                state.count--
+            }
+        }
+    })
+</script>
+</html>
