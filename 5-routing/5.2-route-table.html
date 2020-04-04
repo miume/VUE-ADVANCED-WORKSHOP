@@ -1,0 +1,36 @@
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+
+<div id='app'>
+    <a href='#foo'>foo</a>
+    <a href='#bar'>bar</a>
+</div>
+
+<script>
+    const Foo =  { template: `<div>foo</div>` }
+    const Bar =  { template: `<div>Bar</div>` }
+    const NotFound =  { template: ` <div>NotFound</div>` }
+
+    const routeTable = {
+        'foo': Foo,
+        'bar': Bar
+    }
+
+    window.addEventListener('hashchange', () => {
+        app.url = window.location.hash.slice(1)
+    })
+    
+    const app = new Vue({
+        el: '#app',
+        data: {
+            url: window.location.hash.slice(1)
+        },
+        render (h) {
+            return h('div', [
+                h(routeTable[this.url] || NotFound),
+                h('a', { attrs: { href: '#foo' }}, 'foo'),
+                ' | ',
+                h('a', { attrs: { href: '#bar' }}, 'bar')
+            ])
+        }
+    })
+</script>

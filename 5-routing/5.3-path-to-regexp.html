@@ -1,0 +1,41 @@
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+
+<div id='app'>
+    <a href='#foo'>foo</a>
+    <a href='#bar'>bar</a>
+</div>
+
+<script>
+    //动态路由
+    //path-to-regexp 是url正则表达式，该工具库用来处理url中地址与参数，能够方便得到我们想要的数据
+    const Foo =  { 
+        props: ['id'],
+        template: `<div>foo with id: {{ id }}</div>` 
+    }
+    const Bar =  { template: `<div>Bar</div>` }
+    const NotFound =  { template: ` <div>NotFound</div>` }
+
+    const routeTable = {
+        'foo/:id': Foo,
+        'bar': Bar
+    }
+
+    window.addEventListener('hashchange', () => {
+        app.url = window.location.hash.slice(1)
+    })
+    
+    const app = new Vue({
+        el: '#app',
+        data: {
+            url: window.location.hash.slice(1)
+        },
+        render (h) {
+            return h('div', [
+                h(routeTable[this.url] || NotFound),
+                h('a', { attrs: { href: '#foo' }}, 'foo'),
+                ' | ',
+                h('a', { attrs: { href: '#bar' }}, 'bar')
+            ])
+        }
+    })
+</script>
